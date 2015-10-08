@@ -1,6 +1,6 @@
 <html>
 	<head>
-		<title>Ecosystem Map -H</title>
+		<title>Ecosystem Map</title>
 
 		<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 		<jsp:include page="../../include/head.jsp" />
