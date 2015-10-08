@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security-3.2.xsd">	
+	
+	<security:http  auto-config="true" use-expressions="true" >
+		<security:intercept-url pattern="/j_spring_security_check" access="permitAll" />
+		<security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/portal" access="hasRole('ROLE_USER')" />
+		
+		<security:form-login 
+		    login-page="/login"
+		    login-processing-url="/j_spring_security_check"
+		    default-target-url="/"
+			username-parameter="username"
+			password-parameter="password" 
+			authentication-success-handler-ref="customAuthenticationProvider"
+			authentication-failure-handler-ref="authenticationFailureHandler" />
+			
+		<security:logout
+		    logout-success-url="/"
+		    delete-cookies="JSESSIONID" />
+		<security:csrf/>
+		
+		<security:session-management session-fixation-protection="migrateSession">
+		    <security:concurrency-control max-sessions="1" expired-url="/login" />
+		</security:session-management>
+	</security:http>
+	
+	<!-- Declare an authentication-manager to use a custom userDetailsService -->
+	<security:authentication-manager>
+	     <security:authentication-provider ref="customAuthenticationProvider"/>
+	</security:authentication-manager>
+		
+	<!-- A custom service where Spring will retrieve users and their corresponding access    levels  -->
+	<beans:bean id="customAuthenticationProvider" class="com.ecosystem.auth.CustomAuthenticationProvider"/>
+	
+	<beans:bean id="authenticationFailureHandler"
+	    class="org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler">
+	    <beans:property name="exceptionMappings">
+	        <beans:props>
+	            <beans:prop key="org.springframework.security.authentication.BadCredentialsException">/login?error=badCredentials</beans:prop>
+	            <beans:prop key="org.springframework.security.authentication.CredentialsExpiredException">/login?error=credentialsExpired</beans:prop>
+	            <beans:prop key="org.springframework.security.authentication.LockedException">/login?error=accountLocked</beans:prop>
+	            <beans:prop key="org.springframework.security.authentication.DisabledException">/login?error=accountDisabled</beans:prop>
+	        </beans:props>
+	    </beans:property>
+	</beans:bean>
+
+</beans:beans>
