@@ -12,11 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class EcosystemController {
 	
-	@RequestMapping(method = RequestMethod.GET)
-	public String index() {
-	   return "about";
-	}
-	
 	@RequestMapping(value = "/about", method = RequestMethod.GET)
 	public String about() {
 	   return "about";
