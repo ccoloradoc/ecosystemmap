@@ -10,3 +10,9 @@
 <script src="<c:url value="/resources/jquery/jquery-1.11.3.min.js" />"></script>
 <script src="<c:url value="/resources/foundation-5.5.3/js/foundation.min.js" />"></script>
 <script src="<c:url value="/resources/foundation-5.5.3/js/foundation/foundation.reveal.js" />"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css">
+
+<script src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>

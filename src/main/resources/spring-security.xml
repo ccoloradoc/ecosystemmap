@@ -10,6 +10,7 @@
 	
 	<security:http  auto-config="true" use-expressions="true" >
 		<security:intercept-url pattern="/j_spring_security_check" access="permitAll" />
+		<security:intercept-url pattern="/register" access="permitAll" />
 		<security:intercept-url pattern="/admin" access="hasRole('ROLE_ADMIN')" />
 		<security:intercept-url pattern="/portal" access="hasRole('ROLE_USER')" />
 		
@@ -32,7 +33,7 @@
 		</security:session-management>
 	</security:http>
 	
-	<!-- Declare an authentication-manager to use a custom userDetailsService -->
+	<!-- Declare an authentication-manager to use a custom userService -->
 	<security:authentication-manager>
 	     <security:authentication-provider ref="customAuthenticationProvider"/>
 	</security:authentication-manager>
