@@ -46,6 +46,12 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 			<version>3.2.8.RELEASE</version>
+			<exclusions>
+			   <exclusion>
+			     <groupId>commons-logging</groupId>
+			     <artifactId>commons-logging</artifactId>
+			   </exclusion>
+			</exclusions>
 		</dependency>
         
         <!-- Spring Security -->
@@ -118,6 +124,19 @@
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity</artifactId>
 			<version>1.7</version>
+		</dependency>
+		
+		
+		<dependency>
+		  <groupId>org.slf4j</groupId>
+		  <artifactId>slf4j-api</artifactId>
+		  <version>1.5.8</version>
+		</dependency>
+		<dependency>
+		  <groupId>log4j</groupId>
+		  <artifactId>log4j</artifactId>
+		  <version>1.2.14</version>
+		  <scope>runtime</scope>
 		</dependency>
 		
         
