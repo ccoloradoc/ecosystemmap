@@ -43,10 +43,6 @@
 	</nav>
 </div>
 
-<c:if test="${ not empty message }">
-	<p class="">${ message }</p>
-</c:if>
-
 <!-- The modal for login service -->
 <div id="loginModal" class="reveal-modal tiny" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
   <form action="<c:url value="/j_spring_security_check" />" method="post">
@@ -70,28 +66,28 @@
 
 <!-- The modal for register service -->
 <div id="registerModal" class="reveal-modal tiny" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-	<c:url var="register_new_url" value="/register" />
-	<form:form method="post" action="${register_new_url}" modelAttribute="user">
+	<form method="post" action="<c:url value='/auth/register' />" id="user">
 	  <fieldset>
 	    <legend>Register</legend>
 	
 	    <label> Full Name
-	    	<form:input path="username" placeholder="Audrey Hepburn"/>
+	    	<input id="username" name="username" placeholder="Audrey Hepburn"/>
 	    </label>
 	    <label>Email
-	    	<form:input path="email" type="text" placeholder="audrey.hepburn@ecosystemmap.co"/>
+	    	<input id="email" name="email" type="text" placeholder="audrey.hepburn@ecosystemmap.co"/>
 	    </label>
 	    
 	    <label>Password
-	    	<form:input path="password" type="password" placeholder="*********"/>
+	    	<input id="password" name="password" type="password" placeholder="*********"/>
 	    </label>
 	    
-	    <form:input path="enabled" type="hidden" value="0"/>
+	    <input id="enabled" name="enabled" type="hidden" value="0"/>
+	    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	    
 	    <p class="small">You already have an account? Login <a href="#" id="openLogin">here</a>.</p>
 	    <p  class="small">By clicking the button below, you agree to EcosystemMap's <a target="_blank" href="<c:url value="/terms" />">terms of service</a>.</p>
 	    <button type="submit" class="button expand success">Register</button>
 	  </fieldset>					
-	</form:form>
+	</form>
 	<a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>

@@ -1,4 +1,4 @@
-package com.ecosystem.auth;
+package com.ecosystem.auth.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -24,7 +26,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import com.ecosystem.model.User;
 import com.ecosystem.service.UserService;
 
-public class CustomAuthenticationProvider implements AuthenticationProvider, AuthenticationSuccessHandler {
+public class AuthenticationProviderService implements AuthenticationProvider, AuthenticationSuccessHandler {
 
 	@Autowired
 	private UserService userService;
@@ -35,14 +37,25 @@ public class CustomAuthenticationProvider implements AuthenticationProvider, Aut
         String password = auth.getCredentials().toString();
         
         User user = userService.findByEmail(name);
-
+        
+        //Account does not exist
+        if(user == null) {
+        	throw new BadCredentialsException("Username/Password does not match for " + auth.getPrincipal());
+        }
+        
         if (user.getEmail().equals(name) && user.getPassword().equals(password)) {
+        	//Account has not been activated
+        	if(user.getEnabled() == 0) {
+        		throw new DisabledException("Accoun has not been validated");
+        	}
+        	
             List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
             grantedAuths.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
             Authentication token = new UsernamePasswordAuthenticationToken(name, password, grantedAuths);
             return token;
         }
         
+        //Account password incorrect
         throw new BadCredentialsException("Username/Password does not match for " + auth.getPrincipal());
 	}
 

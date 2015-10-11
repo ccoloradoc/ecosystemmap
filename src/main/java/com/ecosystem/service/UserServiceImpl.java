@@ -59,12 +59,11 @@ public class UserServiceImpl implements UserService {
 		CriteriaQuery<User> criteria = cb.createQuery( User.class );
 		Root<User> personRoot = criteria.from( User.class );
 		criteria.select( personRoot );
-		ParameterExpression<String> eyeColorParam = cb.parameter( String.class );
-		criteria.where( cb.equal( personRoot.get( "email" ), eyeColorParam ) );
+		ParameterExpression<String> emailParam = cb.parameter( String.class );
+		criteria.where( cb.equal( personRoot.get( "email" ), emailParam ) );
 		TypedQuery<User> query = em.createQuery( criteria );
-		query.setParameter( eyeColorParam, email );
+		query.setParameter( emailParam, email );
 		List<User> userList = query.getResultList();
-		System.out.println("Found: " + userList.size());
-		return userList.get(0);
+		return userList.size() > 0 ? userList.get(0) : null;
 	}
 }

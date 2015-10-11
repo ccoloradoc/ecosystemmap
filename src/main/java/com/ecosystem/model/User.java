@@ -1,5 +1,7 @@
 package com.ecosystem.model;
 
+import java.util.UUID;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -58,6 +60,11 @@ public class User {
 	}
 	public void setEnabled(int enabled) {
 		this.enabled = enabled;
+	}
+	
+	public void resetActivationCode() {
+		this.activationCode = UUID.randomUUID().toString().toUpperCase();
+		this.enabled = 0;
 	}
 	
 	@Override
