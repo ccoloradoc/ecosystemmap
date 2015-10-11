@@ -112,7 +112,7 @@ public class AuthenticationController {
 				//Authenticate
 				Authentication token = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
 				SecurityContextHolder.getContext().setAuthentication(token);
-				session.setAttribute("display_name", user.getUsername());
+				session.setAttribute("display_name", dbUser.getUsername());
 			}
 		} 
 		//Redirect
