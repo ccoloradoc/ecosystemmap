@@ -17,11 +17,16 @@
  	<mvc:annotation-driven/>
  	
  	<tx:annotation-driven />
-
+ 	
+ 	<bean class="com.ecosystem.utils.VCAPServices" id="vcapServices">
+            <constructor-arg value="#{systemEnvironment['VCAP_SERVICES']}"/>
+    </bean>
+ 	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-	    <property name="url" value="jdbc:postgresql://localhost:5432/ecosystemmap"/>
-	    <property name="username" value="postgres"/>
-	    <property name="password" value="4815162342"/>
+	     <property name="driverClassName" value="org.postgresql.xa.PGXADataSource"/>
+	     <property name="url" value="#{ @vcapServices.getHost()}"/>
+         <property name="username" value="#{ @vcapServices.getUsername() }"/>
+         <property name="password" value="#{ @vcapServices.getPassword() }"/>
 	</bean>
 	
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
@@ -45,21 +50,16 @@
 	        </props>
 	    </property>
 	</bean>
-
+	
     <!-- also add the following beans to get rid of some exceptions -->
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
-	
-	<!-- bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
-	  <property name="velocityProperties">
-	    <props>
-	      <prop key="resource.loader">file</prop>
-	      <prop key="file.resource.loader.class">org.apache.velocity.runtime.resource.loader.FileResourceLoader</prop>
-	      <prop key="file.resource.loader.path">${webapp.root}/WEB-INF/velocity</prop>
-	      <prop key="file.resource.loader.cache">false</prop>
-	    </props>
-	  </property>
-	</bean-->
+		
+		
+	<bean id="sendGrid" class="com.sendgrid.SendGrid">
+		<constructor-arg value="#{@vcapServices.getSendgridUsername()}"/>
+		<constructor-arg value="#{@vcapServices.getSendgridPassword()}"/>
+	</bean>
 	
 	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
 		<property name="resourceLoaderPath" value="/WEB-INF/velocity/"/>

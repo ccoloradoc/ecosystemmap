@@ -42,6 +42,9 @@ public class AuthenticationController {
 	
 	@Autowired
 	protected AuthenticationProviderService authenticationManager;
+	
+	@Autowired
+	SendGrid sendGridService;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public final String displayLoginform(Model model,  @RequestParam(value = "error", required = false) final String error) {
@@ -145,15 +148,13 @@ public class AuthenticationController {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		
 		paramMap.put("username", user.getUsername());
-		paramMap.put("activation_url", "http://localhost:8080/ecosystemmap/auth/validate/"+ user.getUserId() + "?t=" + user.getActivationCode());
+		paramMap.put("activation_url", "http://ecosystemmap.co/auth/validate/"+ user.getUserId() + "?t=" + user.getActivationCode());
 		
 		
         String text = VelocityEngineUtils.mergeTemplateIntoString(this.velocityEngine, "activation.html", "UTF-8", paramMap);
         
-		System.out.println("Text: " + text);
 		
 		//Send confirmation email 
-	    SendGrid sendgrid = new SendGrid("ecosystem", "eco.48.system");
 	    SendGrid.Email email = new SendGrid.Email();
 
 	    email.addTo(user.getEmail());
@@ -162,8 +163,7 @@ public class AuthenticationController {
 	    email.setHtml(text);
 	    
 	    try {
-			SendGrid.Response response = sendgrid.send(email);
-			System.out.println("Response: " + response.toString());
+			SendGrid.Response response = sendGridService.send(email);
 		} catch (SendGridException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
