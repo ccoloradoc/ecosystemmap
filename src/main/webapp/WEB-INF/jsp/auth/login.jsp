@@ -7,6 +7,7 @@
 		
 	</head>
 	<body>
+	<div class="wrapper">
 		<jsp:include page="../../../include/header.jsp" />
 		<div class="section">
 			
@@ -34,5 +35,6 @@
 	      	</div>	
 		</div>	
 		<jsp:include page="../../../include/footer.jsp" />
+	</div>
 	</body>
 </html>

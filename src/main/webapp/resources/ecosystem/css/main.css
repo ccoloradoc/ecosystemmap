@@ -3,6 +3,21 @@ body {
     background-color: #F5F5F5;
 }
 
+.wrapper {
+	position: relative;
+	min-height: 100%;
+}
+
+.footer, .push {
+	height: 140px;	
+}
+
+.footer {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;	
+}
+
 /*Header*/
 
 .title-area .name h1 a img {
@@ -44,7 +59,6 @@ body {
 .section h3 {
 	 color: #6F6F6F;
 }
-
 
 .card {
 	padding: 1rem;

@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<div class="push"></div>
 <footer class="footer">
   <div class="row">
     <div class="small-12 medium-12 medium-pull-12 columns">
