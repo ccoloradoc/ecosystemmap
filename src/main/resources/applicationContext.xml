@@ -24,13 +24,9 @@
  	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 	     <property name="driverClassName" value="org.postgresql.Driver"/>
-	     <property name="url" value="#{ @vcapServices.getHost()}"/>
-         <property name="username" value="#{ @vcapServices.getUsername() }"/>
-         <property name="password" value="#{ @vcapServices.getPassword() }"/>
-         
-         <!--property name="url" value=""/>
-         <property name="username" value=""/>
-         <property name="password" value=""/-->
+	     <property name="url" value="#{ @vcapServices.get('PostgreSQL by Compose-v5', 'host')}"/>
+         <property name="username" value="#{ @vcapServices.get('PostgreSQL by Compose-v5', 'username') }"/>
+         <property name="password" value="#{ @vcapServices.get('PostgreSQL by Compose-v5', 'password') }"/>
 	</bean>
 	
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
@@ -61,16 +57,10 @@
 		
 		
 	<bean id="sendGrid" class="com.sendgrid.SendGrid">
-		<constructor-arg value="#{@vcapServices.getSendgridUsername()}"/>
-		<constructor-arg value="#{@vcapServices.getSendgridPassword()}"/>
+		<constructor-arg value="#{@vcapServices.get('SendGrid', 'username')}"/>
+		<constructor-arg value="#{@vcapServices.get('SendGrid', 'password')}"/>
 	</bean>
-	
-	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value=""/>
-        <property name="username" value=""/>
-        <property name="password" value=""/>
-	</bean>
-	
+		
 	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
 		<property name="resourceLoaderPath" value="/WEB-INF/velocity/"/>
 	</bean>

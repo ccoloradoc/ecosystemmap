@@ -1,5 +1,9 @@
 package com.ecosystem.utils;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
@@ -11,94 +15,131 @@ public class VCAPServices {
 		{ "user-provided": [ { "name": "PostgreSQL by Compose-v5", "label": "user-provided", "credentials": { "username": "admin", "password": "password", "public_hostname": "jdbc:postgresql://host:port/database"} } ], "sendgrid": [ { "name": "SendGrid", "label": "sendgrid", "plan": "free", "credentials": { "password": "password", "hostname": "host", "username": "username" } }]}
 	*/
 	
-	private String username;
-	private String password;
-	private String host;
-	private String sendgridUsername;
-	private String sendgridPassword;
-	private String sendgridHost;
+	private Map<String, Service> serviceMap = new HashMap<String, Service>();
 	
-	
-	//TODO: Clean this mess!!!
 	public VCAPServices() {
 		
 	}
 	
 	public VCAPServices(String jsonString) {
+		final JSONObject outter = new JSONObject(jsonString);		
+		String[] names = JSONObject.getNames(outter);
 		
-		final JSONObject obj = new JSONObject(jsonString);
-	    final JSONArray userProvided = obj.getJSONArray("user-provided");
+		for(String name : names) {
+			JSONArray inner = outter.getJSONArray(name);
+			for(int i = 0; i < inner.length(); i ++) {
+				Service service = parse(inner.getJSONObject(i));
+				serviceMap.put(service.getName(), service);
+			}
+		}
+	}
+	
+	public String get(String serviceName, String property) {
+		if(serviceMap.containsKey(serviceName)) {
+			Service service = serviceMap.get(serviceName);
+			if(property.equalsIgnoreCase("username")) {
+				return service.getCredentials().getUsername();
+			}
+			if(property.equalsIgnoreCase("password")) {
+				return service.getCredentials().getPassword();
+			}
+			if(property.equalsIgnoreCase("host")) {
+				return service.getCredentials().getHost();
+			}
+		}
+		return "";
+	}
+	
+	private Service parse(JSONObject element) {
+		Service service = new Service();
+		
+		if(element.has("name"))
+			service.setName(element.getString("name"));
+		if(element.has("label"))
+			service.setLabel(element.getString("label"));
+		if(element.has("plan"))
+			service.setPlan(element.getString("plan"));
+		
+		if(element.has("credentials")) {
+			Credentials credentialsBean = new Credentials();
+			JSONObject credentials = element.getJSONObject("credentials");
+			if(credentials.has("username"))
+				credentialsBean.setUsername(credentials.getString("username"));
+			if(credentials.has("password"))
+				credentialsBean.setPassword(credentials.getString("password"));
+			if(credentials.has("host"))
+				credentialsBean.setHost(credentials.getString("host"));
+			if(credentials.has("public_hostname"))
+				credentialsBean.setHost(credentials.getString("public_hostname"));
+			service.setCredentials(credentialsBean);
+		}	    
+    	
 	    
-	    int length = userProvided.length();
-	    for(int i = 0; i < length; i++) {
-	    	JSONObject element = userProvided.getJSONObject(i);
-	    	if(element.getString("name").equalsIgnoreCase("PostgreSQL by Compose-v5")) {
-	    		final JSONObject credentials = element.getJSONObject("credentials"); 
-	    	    username = credentials.getString("username");
-	    	    password = credentials.getString("password");
-	    	    host = credentials.getString("public_hostname");
-	    	}
-	    }    
-	    
-	    final JSONArray sendGrid = obj.getJSONArray("sendgrid");
-	    
-	    length = userProvided.length();
-	    for(int i = 0; i < length; i++) {
-	    	JSONObject element = sendGrid.getJSONObject(i);
-	    	if(element.getString("name").equalsIgnoreCase("SendGrid")) {
-	    		final JSONObject credentials = element.getJSONObject("credentials"); 
-	    		sendgridUsername = credentials.getString("username");
-	    		sendgridPassword = credentials.getString("password");
-	    		sendgridHost = credentials.getString("hostname");
-	    	}
-	    }
+	    return service;
 	}
 
-	public String getUsername() {
-		return username;
-	}
+	public class Service {
+		private String name;
+		private String label;
+		private String plan;
+		private Credentials credentials;
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
 
-	public String getPassword() {
-		return password;
-	}
+		public String getName() {
+			return name;
+		}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+		public void setName(String name) {
+			this.name = name;
+		}
 
-	public String getHost() {
-		return host;
-	}
+		public String getLabel() {
+			return label;
+		}
 
-	public void setHost(String host) {
-		this.host = host;
-	}
+		public void setLabel(String label) {
+			this.label = label;
+		}
 
-	public String getSendgridUsername() {
-		return sendgridUsername;
-	}
+		public String getPlan() {
+			return plan;
+		}
 
-	public void setSendgridUsername(String sendgridUsername) {
-		this.sendgridUsername = sendgridUsername;
-	}
+		public void setPlan(String plan) {
+			this.plan = plan;
+		}
 
-	public String getSendgridPassword() {
-		return sendgridPassword;
-	}
+		public Credentials getCredentials() {
+			return credentials;
+		}
 
-	public void setSendgridPassword(String sendgridPassword) {
-		this.sendgridPassword = sendgridPassword;
+		public void setCredentials(Credentials credentials) {
+			this.credentials = credentials;
+		}
 	}
-
-	public String getSendgridHost() {
-		return sendgridHost;
-	}
-
-	public void setSendgridHost(String sendgridHost) {
-		this.sendgridHost = sendgridHost;
+	
+	public class Credentials {
+		private String username;
+		private String password;
+		private String host;
+		
+		public String getUsername() {
+			return username;
+		}
+		public void setUsername(String username) {
+			this.username = username;
+		}
+		public String getPassword() {
+			return password;
+		}
+		public void setPassword(String password) {
+			this.password = password;
+		}
+		public String getHost() {
+			return host;
+		}
+		public void setHost(String host) {
+			this.host = host;
+		}
 	}
 }

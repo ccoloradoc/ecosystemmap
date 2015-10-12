@@ -14,7 +14,7 @@
 			<div class="row">
 	     		
 		        <div class="large-offset-3 large-5 columns" role="content">
-		        	<form name='loginForm' action="<c:url value="j_spring_security_check" />" method='POST'>
+		        	<form name='loginForm' action="<c:url value="/j_spring_security_check" />" method='POST'>
 					  <fieldset>
 					    <legend>Login</legend>
 					
