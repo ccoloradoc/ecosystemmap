@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -49,7 +49,7 @@ public class AuthenticationController {
 	private SendGrid sendGridService;
 	
 	@Autowired
-	private MailSender mailSender;
+	private JavaMailSenderImpl mailSender;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public final String displayLoginform(Model model,  @RequestParam(value = "error", required = false) final String error) {
@@ -180,7 +180,9 @@ public class AuthenticationController {
         email.setSubject("Welcome To Ecosystem Map! Confirm Your Email");
         email.setText(text);
         
+        
         mailSender.send(email);
+        
         
 	}
 }

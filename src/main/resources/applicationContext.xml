@@ -23,14 +23,14 @@
     </bean>
  	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
-	     <property name="driverClassName" value="javax.sql.Datasource"/>
-	     <!--property name="url" value="#{ @vcapServices.getHost()}"/>
+	     <property name="driverClassName" value="org.postgresql.Driver"/>
+	     <property name="url" value="#{ @vcapServices.getHost()}"/>
          <property name="username" value="#{ @vcapServices.getUsername() }"/>
-         <property name="password" value="#{ @vcapServices.getPassword() }"/-->
+         <property name="password" value="#{ @vcapServices.getPassword() }"/>
          
-         <property name="url" value=""/>
+         <!--property name="url" value=""/>
          <property name="username" value=""/>
-         <property name="password" value=""/>
+         <property name="password" value=""/-->
 	</bean>
 	
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
@@ -65,7 +65,7 @@
 		<constructor-arg value="#{@vcapServices.getSendgridPassword()}"/>
 	</bean>
 	
-	<bean id="mailSender" class="org.springframework.mail.MailSender;">
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value=""/>
         <property name="username" value=""/>
         <property name="password" value=""/>
