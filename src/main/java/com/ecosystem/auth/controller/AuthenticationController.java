@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -41,10 +43,13 @@ public class AuthenticationController {
     private VelocityEngine velocityEngine;
 	
 	@Autowired
-	protected AuthenticationProviderService authenticationManager;
+	private AuthenticationProviderService authenticationManager;
 	
 	@Autowired
-	SendGrid sendGridService;
+	private SendGrid sendGridService;
+	
+	@Autowired
+	private MailSender mailSender;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public final String displayLoginform(Model model,  @RequestParam(value = "error", required = false) final String error) {
@@ -154,19 +159,28 @@ public class AuthenticationController {
         String text = VelocityEngineUtils.mergeTemplateIntoString(this.velocityEngine, "activation.html", "UTF-8", paramMap);
         
 		
-		//Send confirmation email 
-	    SendGrid.Email email = new SendGrid.Email();
-
-	    email.addTo(user.getEmail());
-	    email.setFrom("support@ecosystemmap.co");
-	    email.setSubject("Welcome To Ecosystem Map! Confirm Your Email");
-	    email.setHtml(text);
-	    
-	    try {
-			SendGrid.Response response = sendGridService.send(email);
-		} catch (SendGridException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+//		//Send confirmation email 
+//	    SendGrid.Email email = new SendGrid.Email();
+//
+//	    email.addTo(user.getEmail());
+//	    email.setFrom("support@ecosystemmap.co");
+//	    email.setSubject("Welcome To Ecosystem Map! Confirm Your Email");
+//	    email.setHtml(text);
+//	    
+//	    try {
+//			SendGrid.Response response = sendGridService.send(email);
+//		} catch (SendGridException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+        
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setFrom("support@ecosystemmap.co");
+        email.setTo(user.getEmail());
+        email.setSubject("Welcome To Ecosystem Map! Confirm Your Email");
+        email.setText(text);
+        
+        mailSender.send(email);
+        
 	}
 }
