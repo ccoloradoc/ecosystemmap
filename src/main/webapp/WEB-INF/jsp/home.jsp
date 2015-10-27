@@ -61,7 +61,7 @@
 				        <div class="profile-card">
 				          <img src="http://zurb.com/ink/images/inky-computer.svg" alt="Inky">
 				          <div class="profile-info">
-				            <h4 class="subheader">Define elements</h4>
+				            <h4 class="subheader">Define element's archetypes</h4>
 				            <p>What is the information you want to know about your environment's elements?.</p>
 				          </div>
 				        </div>
