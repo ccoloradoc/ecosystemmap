@@ -1,4 +1,4 @@
-package com.ecosystem.service;
+package com.ecosystem.service.impl;
 
 import java.util.Map;
 
@@ -8,6 +8,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
+import com.ecosystem.service.MailService;
 import com.sendgrid.SendGrid;
 import com.sendgrid.SendGridException;
 
