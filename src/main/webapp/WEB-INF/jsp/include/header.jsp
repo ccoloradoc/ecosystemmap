@@ -27,7 +27,7 @@
 	      		<sec:authorize access="hasAnyRole('ROLE_ADMIN', 'DEVELOPER')">
 	      		<li><a href="<c:url value="/admin" />">Admin Panel</a></li>
 	      		</sec:authorize>
-	      		<li><a href="<c:url value="/ecosystems" />">Ecosystems</a></li>
+	      		<li><a href="<c:url value="/portal" />">Ecosystems</a></li>
 	      		<li><a href="<c:url value="/settings" />">Settings</a></li>
 	      		<li>
 	      			<a id="logoutMenu" href="#">Logout</a>
