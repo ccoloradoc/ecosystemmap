@@ -3,12 +3,12 @@
 		<title>Ecosystem Map</title>
 
 		<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>		
-		<jsp:include page="../../../include/head.jsp" />
+		<jsp:include page="../include/head.jsp" />
 		
 	</head>
 	<body>
 	<div class="wrapper">
-		<jsp:include page="../../../include/header.jsp" />
+		<jsp:include page="../include/header.jsp" />
 		<div class="section">
 			
 			<div class="row">
@@ -34,7 +34,7 @@
 		     	         
 	      	</div>	
 		</div>	
-		<jsp:include page="../../../include/footer.jsp" />
+		<jsp:include page="../include/footer.jsp" />
 	</div>
 	</body>
 </html>

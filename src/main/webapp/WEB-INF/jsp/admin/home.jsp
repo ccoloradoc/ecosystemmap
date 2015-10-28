@@ -5,11 +5,11 @@
 		<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 		<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 		
-		<jsp:include page="../../../include/head.jsp" />
+		<jsp:include page="../include/head.jsp" />
 	</head>
 	<body>
 		<div class="wrapper">
-			<jsp:include page="../../../include/header.jsp" />
+			<jsp:include page="../include/header.jsp" />
 			<section class="section">			
 				<div class="row">
 		         	<div class="large-12 column">
@@ -93,7 +93,7 @@
 	            </div>
 		      	
 			</section>	
-			<jsp:include page="../../../include/footer.jsp" />
+			<jsp:include page="../include/footer.jsp" />
 			<script type="text/javascript">
 				$('.usertable').DataTable();
 			</script>
