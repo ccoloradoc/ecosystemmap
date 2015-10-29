@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,14 +30,32 @@ public class EcosystemController {
 	   return "portal/home";
 	}	
 	
-	
-	
 	@RequestMapping(value = "/ecosystem", method=RequestMethod.GET)
     @ResponseBody
     public List<Ecosystem> getEcosystems() {
 		return ecosystemService.getEcosystemList();
     }
-
+	
+	@RequestMapping(value="/ecosystem", method=RequestMethod.POST)
+    @ResponseBody
+    public Ecosystem saveEcosystem(@RequestBody Ecosystem ecosystem) {
+		ecosystemService.addEcosystem(ecosystem);
+		return ecosystem;
+	}
+	
+	@RequestMapping(value="/ecosystem", method=RequestMethod.PUT)
+	@ResponseBody
+	public List<Ecosystem> updateEcosystem(@RequestBody Ecosystem ecosystem) {
+		ecosystemService.updateEcosystem(ecosystem);
+		return ecosystemService.getEcosystemList();
+	}
+	
+	@RequestMapping(value="/ecosystem/{id}", method=RequestMethod.DELETE)
+	@ResponseBody
+	public List<Ecosystem> deleteEcosystem(@PathVariable Integer id) {
+		ecosystemService.removeEcosystem(id);
+		return ecosystemService.getEcosystemList();
+	}
 	
 	@RequestMapping(value = "/ecosystem/{id}/archetype", method=RequestMethod.GET)
     @ResponseBody

@@ -82,7 +82,7 @@
 	    </label>
 	    
 	    <input id="enabled" name="enabled" type="hidden" value="0"/>
-	    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	    <input id="csrf" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	    
 	    <p class="small">You already have an account? Login <a href="#" id="openLogin">here</a>.</p>
 	    <p  class="small">By clicking the button below, you agree to EcosystemMap's <a target="_blank" href="<c:url value="/terms" />">terms of service</a>.</p>

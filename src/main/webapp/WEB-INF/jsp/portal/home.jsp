@@ -14,23 +14,13 @@
 			<section class="section">			
 				<div class="row">
 		         	<div class="large-12 column">
-		         		<div class="card">
-		         			<div class="card-header">
-		         				<h3><i class="fi-torsos-all"></i>&nbsp;Ecosystem</h3>
-		         				<button href="#" data-dropdown="users-drop" aria-controls="users-drop" aria-expanded="false" class="tiny button secondary dropdown"><i class="fi-widget"></i></button><br>
-								<ul id="users-drop" data-dropdown-content class="f-dropdown" aria-hidden="true">
-								  <li><a href="#" data-reveal-id="newUserModal" >Add Ecosystem</a></li>
-								</ul>
-		         			</div>
+		         		<div class="view-animate-container">
+		         			<div ng-view class="view-animate">
 		         			
-		         			<div class="card-content" ng-view>		         			
-							    
-						    </div>
+		         			</div>
 		         		</div>
 		         	</div>
 		      	</div>
-		      	
-		      	
 			</section>	
 			
 			<script src="<c:url value="/resources/ecosystem/js/portal/app.js" />"></script>

@@ -1,23 +1,56 @@
-<h3>Ecosystem # {{id}}</h3>
-
-<table>
-	<thead>
-		<th>Id</th>
-		<th>Name</th>
-		<th>Description</th>
-		<th></th>
-	</thead>
-	<tbody>
-		<tr ng-repeat="archetype in archetypes">
-			<td>{{ archetype.id }}</td>
-			<td>{{ archetype.name }}</td>
-			<td>{{ archetype.description }}</td>
-			<td>
-				<a href="#/">View Details</a>
-			</td>
-		</tr>
-	</tbody>
-</table>
-
-
-<a href="#/">Go back</a>
+<div class="card">
+   	<div class="card-header">
+   		<h3><i class="fi-torsos-all"></i>&nbsp;Ecosystem</h3>
+   	</div>		
+   	<div class="card-content">		         			
+		<table>
+			<thead>
+				<th>Id</th>
+				<th>Name</th>
+				<th>Description</th>
+				<th></th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="archetype in archetypes">
+					<td>{{ archetype.id }}</td>
+					<td>{{ archetype.name }}</td>
+					<td>{{ archetype.description }}</td>
+					<td>
+						<a href="#/">View Details</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<hr/>
+		
+		<div>
+			<form action="">
+				<fieldset>
+    				<legend>Archetype</legend>
+					<div class="row">
+						<div class="large-12 columns">
+						  <label>Name
+						    <input type="text" placeholder="Archetype Name" />
+						  </label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="large-12 columns">
+						  <label>Description
+						    <textarea placeholder="Archetype Description"></textarea>
+						  </label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="large-12 columns">
+							<a href="#" class="button expand">Create</a>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+		
+		<a href="#/">Go back</a>   
+ 	</div>
+</div>
