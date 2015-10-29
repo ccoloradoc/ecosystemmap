@@ -14,7 +14,8 @@
 
 	<!-- the mvc resources tag does the magic -->
 	<mvc:resources mapping="/resources/**" location="/resources/"/>
-
+	
+	<mvc:resources mapping="/views/**" location="/WEB-INF/jsp/portal/views/"/>
 
 	<!-- JSTL resolver -->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">

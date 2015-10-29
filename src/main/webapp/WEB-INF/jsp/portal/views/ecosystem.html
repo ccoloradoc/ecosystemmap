@@ -1,0 +1,23 @@
+<h3>Ecosystem # {{id}}</h3>
+
+<table>
+	<thead>
+		<th>Id</th>
+		<th>Name</th>
+		<th>Description</th>
+		<th></th>
+	</thead>
+	<tbody>
+		<tr ng-repeat="archetype in archetypes">
+			<td>{{ archetype.id }}</td>
+			<td>{{ archetype.name }}</td>
+			<td>{{ archetype.description }}</td>
+			<td>
+				<a href="#/">View Details</a>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+
+<a href="#/">Go back</a>

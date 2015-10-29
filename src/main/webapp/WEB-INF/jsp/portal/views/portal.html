@@ -1,0 +1,20 @@
+<h3>Portal</h3>
+
+<table>
+	<thead>
+		<th>Id</th>
+		<th>Name</th>
+		<th>Description</th>
+		<th></th>
+	</thead>
+	<tbody>
+		<tr ng-repeat="ecosystem in ecosystems">
+			<td>{{ ecosystem.id }}</td>
+			<td>{{ ecosystem.name }}</td>
+			<td>{{ ecosystem.description }}</td>
+			<td>
+				<a href="#ecosystem/{{ecosystem.id}}/archetype">View Details</a>
+			</td>
+		</tr>
+	</tbody>
+</table>

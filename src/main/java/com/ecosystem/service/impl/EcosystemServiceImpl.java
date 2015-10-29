@@ -9,6 +9,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ecosystem.model.Archetype;
 import com.ecosystem.model.Ecosystem;
 import com.ecosystem.service.EcosystemService;
 
@@ -19,8 +20,8 @@ public class EcosystemServiceImpl implements EcosystemService {
 	EntityManager em;
 	
 	@Transactional
-	public void addEcosystem(Ecosystem Ecosystem) {
-		em.persist(Ecosystem);
+	public void addEcosystem(Ecosystem ecosystem) {
+		em.persist(ecosystem);
 	}
 	
 	@Transactional
@@ -38,13 +39,21 @@ public class EcosystemServiceImpl implements EcosystemService {
 	}
 	
 	@Transactional
-	public void updateEcosystem(Ecosystem Ecosystem) {
-		em.merge(Ecosystem);
+	public void updateEcosystem(Ecosystem ecosystem) {
+		em.merge(ecosystem);
 	}
 	
 	@Transactional
-	public Ecosystem find(Integer EcosystemId) {
-		return em.find(Ecosystem.class, EcosystemId);
+	public Ecosystem find(Integer ecosystemId) {
+		return em.find(Ecosystem.class, ecosystemId);
+	}
+
+	@Transactional
+	public List<Archetype> findArchetypesFor(Integer ecosystemId) {
+		Ecosystem ecosystem = em.find(Ecosystem.class, ecosystemId);
+		if(ecosystem != null)
+			return ecosystem.getArchetypes();
+		return null;
 	}
 
 }
