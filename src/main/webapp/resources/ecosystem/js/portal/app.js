@@ -4,11 +4,7 @@ ecosystemApp.factory('PathInterceptor', ['$location',function($location) {
     var path = {
         request: function(config) {
         	
-        	var path = $location.absUrl(); 
-            var pathArray = path.split('/');
-            var appContext = pathArray[3];
-        	
-        	config.url = "/"+appContext+config.url;
+        	config.url = $('#rootContext').attr('href') +config.url;
 
         	console.log('>>>>' + config.url);
   
@@ -25,8 +21,8 @@ ecosystemApp.factory('PathInterceptor', ['$location',function($location) {
 
 ecosystemApp.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
 	$routeProvider
-		.when("/", {templateUrl: '/views/portal.html', controller: 'portalController'})
-		.when("/ecosystem/:id/archetype", {templateUrl: '/views/ecosystem.html', controller: 'ecosystemController'});
+		.when("/", {templateUrl: 'views/portal.html', controller: 'portalController'})
+		.when("/ecosystem/:id/archetype", {templateUrl: 'views/ecosystem.html', controller: 'ecosystemController'});
 	
 	$httpProvider.interceptors.push('PathInterceptor');
 }]);
