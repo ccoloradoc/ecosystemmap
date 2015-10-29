@@ -30,7 +30,7 @@ ecosystemApp.config(['$routeProvider', '$httpProvider', function($routeProvider,
 
 ecosystemApp.controller('portalController', ['$scope', '$http', function($scope, $http) {
 		
-	$http.get('/portal/ecosystem')
+	$http.get('portal/ecosystem')
 	.then(
 		function(response) {
 			$scope.ecosystems = response.data;
@@ -44,7 +44,7 @@ ecosystemApp.controller('portalController', ['$scope', '$http', function($scope,
 ecosystemApp.controller('ecosystemController', ['$scope', '$routeParams', '$http', function($scope, $routeParams, $http) {
 	$scope.id = $routeParams.id;
 	
-	$http.get('/portal/ecosystem/' + $scope.id + '/archetype')
+	$http.get('portal/ecosystem/' + $scope.id + '/archetype')
 	.then(
 		function(response) {
 			$scope.archetypes = response.data;
