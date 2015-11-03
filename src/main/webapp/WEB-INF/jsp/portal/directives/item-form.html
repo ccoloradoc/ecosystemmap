@@ -1,0 +1,27 @@
+<form ng-submit="submit()">
+	<fieldset>
+ 		<legend>{{ objectForm.meta.title}}</legend>
+		<div class="row">
+			<div class="large-12 columns">
+			  <label>Name
+			    <input type="text" placeholder="Ecosystem Name" ng-model="objectForm.object.name"/>
+			  </label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="large-12 columns">
+			  <label>Description
+			    <textarea placeholder="Ecosystem Description" ng-model="objectForm.object.description"></textarea>
+			  </label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="medium-6 large-6 columns">
+				<input type="submit" class="button expand success" value="Submit">
+			</div>
+			<div class="medium-6 large-6 columns">
+				<a href="" class="button expand alert" ng-click="cancel()">Cancel</a>
+			</div>
+		</div>
+	</fieldset>
+</form>

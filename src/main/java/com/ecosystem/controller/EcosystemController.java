@@ -36,6 +36,12 @@ public class EcosystemController {
 		return ecosystemService.getEcosystemList();
     }
 	
+	@RequestMapping(value="/ecosystem/{id}", method=RequestMethod.GET)
+	@ResponseBody
+	public Ecosystem getEcosystem(@PathVariable Integer id) {
+		return ecosystemService.find(id);
+	}
+	
 	@RequestMapping(value="/ecosystem", method=RequestMethod.POST)
     @ResponseBody
     public Ecosystem saveEcosystem(@RequestBody Ecosystem ecosystem) {
@@ -43,16 +49,17 @@ public class EcosystemController {
 		return ecosystem;
 	}
 	
-	@RequestMapping(value="/ecosystem", method=RequestMethod.PUT)
+	@RequestMapping(value="/ecosystem/{id}", method=RequestMethod.PUT)
 	@ResponseBody
-	public List<Ecosystem> updateEcosystem(@RequestBody Ecosystem ecosystem) {
+	public Ecosystem updateEcosystem(@RequestBody Ecosystem ecosystem, @PathVariable Integer id) {
 		ecosystemService.updateEcosystem(ecosystem);
-		return ecosystemService.getEcosystemList();
+		return ecosystem;
 	}
 	
 	@RequestMapping(value="/ecosystem/{id}", method=RequestMethod.DELETE)
 	@ResponseBody
 	public List<Ecosystem> deleteEcosystem(@PathVariable Integer id) {
+		Ecosystem ecosystem = ecosystemService.find(id);
 		ecosystemService.removeEcosystem(id);
 		return ecosystemService.getEcosystemList();
 	}

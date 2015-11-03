@@ -1,4 +1,4 @@
-var ecosystemApp = angular.module('ecosystemApp', ['ngRoute', 'ngAnimate']);
+var ecosystemApp = angular.module('ecosystemApp', ['ngRoute', 'ngResource']);
 
 ecosystemApp.factory('PathInterceptor', ['$location', '$log',function($location, $log) {  
     return {
@@ -22,92 +22,170 @@ ecosystemApp.factory('PathInterceptor', ['$location', '$log',function($location,
 ecosystemApp.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
 	$routeProvider
 		.when("/", {templateUrl: 'views/portal.html', controller: 'portalController'})
-		.when("/ecosystem/:id/archetype", {templateUrl: 'views/ecosystem.html', controller: 'ecosystemController'});
+		.when("/ecosystem/:id/archetype", {templateUrl: 'views/ecosystem.html', controller: 'ecosystemController'})
+		.otherwise({redirectTo: '/'});
 	
 	$httpProvider.interceptors.push('PathInterceptor');
 }]);
 
 
-ecosystemApp.controller('portalController', ['$scope', '$http', function($scope, $http) {
+ecosystemApp.service('ecosystemService', [ '$resource', function($resource) {
 	
-	$scope.resetForm = function() {
-		$scope.ecosystemForm = {
-				name: '',
-				description: ''
-			};	
-		
-		$scope.displayForm = false;
-	};
+	var self = this;
 	
-	//UPDATE
-	$scope.prepareUpdate = function(id) {
-		
-		for(var i in $scope.ecosystems) {
-			var ecosystem = $scope.ecosystems[i];
-			console.log(id + ' v. ' + ecosystem.id);
-			if(ecosystem.id == id) {
-				$scope.ecosystemForm = ecosystem;
-				$scope.displayForm = true;
-			}
-		}
-		
-		$scope.displayForm = true;
-		$scope.create = false;
-				
-	};
+	this.ecosystemAPI = $resource('portal/ecosystem/:ecosystemId', {ecosystemId: '@id'}, { update: { method: 'PUT' }, delete: { method: 'DELETE', isArray: true }});
 	
-	$scope.update = function() {
-		$http.put('portal/ecosystem', $scope.ecosystemForm)
-		.then(
-			function(response) {
-				$scope.resetForm();
-				$scope.ecosystems = response.data;
-			}, 
-			function(response) {
-				console.log(response);
-			});
+	this.query = function() {
+		return self.ecosystemAPI.query();
 	}
 	
+	this.get = function(id) {
+		return self.ecosystemAPI.get({ecosystemId:id});
+	}
 	
-	//POST
-	$scope.submit = function() {
-		$http.post('portal/ecosystem', $scope.ecosystemForm)
-		.then(
-			function(response) {
-				$scope.resetForm();
-				$scope.ecosystems.push(response.data);
-			}, 
-			function(response) {
-				console.log(response);
-			});
-	};
+	this.remove = function(id) {
+		return self.ecosystemAPI.delete({ecosystemId:id});
+	}
 	
-	//DELETE
-	$scope.remove = function(id) {
-		$http.delete('portal/ecosystem/' + id)
-		.then(
-			function(response) {
-				$scope.resetForm();
-				$scope.ecosystems = response.data;
-			}, 
-			function(response) {
-				console.log(response);
-			});
-	};
+	this.update = function(id, object) {
+		return self.ecosystemAPI.update({ecosystemId:id}, object);
+	}
 	
-	//GET: Setup view
-	$http.get('portal/ecosystem')
-	.then(
-		function(response) {
-			$scope.ecosystems = response.data;
-		}, 
-		function(response) {
-			$scope.error = "Error while retrieving information";
-		});
+	this.save = function(object) {
+		return self.ecosystemAPI.save({}, object);
+	}
+
+}]);	
+
+
+ecosystemApp.controller('portalController', ['$scope', 'ecosystemService', function($scope, ecosystemService) {
+
+	$scope.displayForm = false;
 	
-	$scope.resetForm();
+	$scope.resetForm = function() {
+		$scope.objectForm = {
+				object: {
+					name: '',
+					description: ''
+				},
+				meta: {
+					title: 'Ecosystem'
+				}
+			};	
+	}
+
+	
+	$scope.actions = {
+			panel: {
+				create: function() {
+					$scope.resetForm();
+					$scope.displayForm = true;
+				},
+				onLoad: function() {
+					$scope.resetForm();
+					$scope.items = ecosystemService.query();
+				}
+			},
+			card:  {
+				view: function(item) {
+					//TODO
+					console.log(item.id);
+				},
+				edit: function(item) {
+					$scope.objectForm.object = item;	
+					$scope.displayForm = true;
+				},
+				remove: function(item) {
+					$scope.items = ecosystemService.remove(item.id);
+				}
+			},
+			
+			form: {
+				submit: function() {
+					//TODO
+					console.log($scope.objectForm.object.id );
+					if($scope.objectForm.object.id != undefined)
+						ecosystemService.update($scope.objectForm.object.id, $scope.objectForm.object);
+					else
+						$scope.items.push(ecosystemService.save($scope.objectForm.object));
+						
+					$scope.displayForm = false;
+				},
+				cancel: function() {
+					$scope.resetForm();
+					$scope.displayForm = false;
+				}
+			}
+	};	
 }]);
 
+
+ecosystemApp.directive('panel', function() {
+	return {
+		restrict: 'AE',
+		templateUrl: 'directives/panel.html',
+		replace: true,
+		transclude: true,
+		scope: {
+			objectList: '=',
+			actions: '='
+		},
+		controller: ['$scope', function($scope) {
+			for(var name in $scope.actions.panel) {
+				$scope[name] = $scope.actions.panel[name]
+			}
+			
+			this.initializeItem = function( card ) {
+				for(var name in $scope.actions.card) {
+					card[name] = $scope.actions.card[name]
+				}
+			}
+			
+			this.initializeForm = function( form ) {
+				for(var name in $scope.actions.form) {
+					form[name] = $scope.actions.form[name]
+				}
+			}
+			
+			$scope.onLoad();
+		}],
+		link: function(scope, element, attr) {
+			$(document).foundation();
+		}
+	};
+});
+
+ecosystemApp.directive('item', function() {
+	return {
+		require: '^panel',
+		restrict: 'AE',
+		templateUrl: 'directives/item.html',
+		replace: true,
+		transclude: true,
+		scope: {
+			object: '='
+		},
+		link: function($scope, element, attr, controller) {
+			controller.initializeItem($scope);
+		}
+	};
+});
+
+ecosystemApp.directive('itemForm', function($compile) {
+	return {
+		require: '^panel',
+		restrict: 'AE',
+		templateUrl: 'directives/item-form.html',
+		replace: true,
+		transclude: true,
+		scope: {
+			objectForm: '='
+		},
+		link: function(scope, element, attrs, ctrl) {
+			ctrl.initializeForm(scope);
+	    }
+	};
+});
 
 ecosystemApp.controller('ecosystemController', ['$scope', '$routeParams', '$http', function($scope, $routeParams, $http) {
 	$scope.id = $routeParams.id;

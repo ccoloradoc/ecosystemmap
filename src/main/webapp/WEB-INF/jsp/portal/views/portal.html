@@ -1,66 +1,10 @@
-<div class="card">
-   	<div class="card-header">
-   		<h3><i class="fi-torsos-all"></i>&nbsp;Ecosystem</h3>
-   	</div>		
-   	<div class="card-content">
-   		<div ng-hide="displayForm">		         			
-			<table>
-				<thead>
-					<th>Id</th>
-					<th>Name</th>
-					<th>Description</th>
-					<th></th>
-				</thead>
-				<tbody>
-					<tr ng-repeat="ecosystem in ecosystems">
-						<td>{{ ecosystem.id }}</td>
-						<td>{{ ecosystem.name }}</td>
-						<td>{{ ecosystem.description }}</td>
-						<td>
-							<ul class="button-group round">
-							  <li><a class="button tiny secondary" ng-click="prepareUpdate(ecosystem.id)"><i class="fi-pencil"></i></a></li>
-							  <li><a class="button tiny secondary" ng-click="remove(ecosystem.id)"><i class="fi-x-circle"></i></a></li>
-							  <li><a href="#ecosystem/{{ecosystem.id}}/archetype" class="button tiny secondary"><i class="fi-clipboard"></i></a></li>
-							</ul>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<a class="button expand" ng-click="displayForm = create = true" ng-hide="displayForm">Add New Ecosystem</a>
-		</div>   
-		
-		<div ng-show="displayForm">
-			<form action="">
-				<fieldset>
-    				<legend>Ecosystem</legend>
-					<div class="row">
-						<div class="large-12 columns">
-						  <label>Name
-						    <input type="text" placeholder="Ecosystem Name" ng-model="ecosystemForm.name"/>
-						  </label>
-						</div>
-					</div>
-					<div class="row">
-						<div class="large-12 columns">
-						  <label>Description
-						    <textarea placeholder="Ecosystem Description" ng-model="ecosystemForm.description"></textarea>
-						  </label>
-						</div>
-					</div>
-					<div class="row">
-						<div class="medium-6 large-6 columns">
-							<a href="" class="button expand success" ng-click="submit()" ng-show="create">Create</a>
-							<a href="" class="button expand success" ng-click="update()" ng-hide="create">Update</a>
-						</div>
-						<div class="medium-6 large-6 columns">
-							<a href="" class="button expand alert" ng-click="displayForm = false">Cancel</a>
-						</div>
-					</div>
-				</fieldset>
-			</form>
+<panel object-list="items" actions="actions">	
+	<div class="grid" ng-hide="displayForm">
+		<div class="grid-element" ng-repeat="item in items">
+			<item object="item"></item>
 		</div>
-		
-		<hr/>
-		
- 	</div>
-</div>
+	</div>
+	<div ng-show="displayForm">
+		<item-form object-form="objectForm"></item-form>
+	</div>
+</panel>

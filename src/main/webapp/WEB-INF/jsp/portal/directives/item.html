@@ -1,0 +1,22 @@
+<article class="ecosystem-card">
+	<div class="ecosystem-card-header">
+		<h5 class="title">{{ object.id + ' - ' +object.name }}</h5>
+		
+		<button id="button-dropdown-{{object.id}}" href="#" data-dropdown="card-drop-{{object.id}}" aria-controls="card-drop-{{object.id}}" aria-expanded="false" class="dropdown-menu button tiny secondary dropdown"><i class="fi-widget"></i></button><br>
+		<ul id="card-drop-{{object.id}}" data-dropdown-content class="tiny f-dropdown" aria-hidden="true">
+			<li><a ng-click="view(object)"><i class="fi-clipboard"></i>&nbsp;View</a></li>
+		  	<li><a ng-click="edit(object)"><i class="fi-pencil"></i>&nbsp;Edit</a></li>
+		  	<li><a ng-click="remove(object)"><i class="fi-x-circle"></i>&nbsp;Remove</a></li>
+		</ul>
+
+	</div>
+	<div class="ecosystem-card-content">
+		<a class="th [10]" href="#">
+		  <img src="/ecosystemmap/resources/ecosystem/img/ecosystem_placeholder.png">
+		</a>
+		<p class="summary">{{ object.description }}</p>
+	</div>
+	<div class="ecosystem-card-content" ng-transclude>
+		<!-- Additional information -->
+	</div>
+</article>

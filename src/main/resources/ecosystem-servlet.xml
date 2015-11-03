@@ -16,6 +16,7 @@
 	<mvc:resources mapping="/resources/**" location="/resources/"/>
 	
 	<mvc:resources mapping="/views/**" location="/WEB-INF/jsp/portal/views/"/>
+	<mvc:resources mapping="/directives/**" location="/WEB-INF/jsp/portal/directives/"/>
 
 	<!-- JSTL resolver -->
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">

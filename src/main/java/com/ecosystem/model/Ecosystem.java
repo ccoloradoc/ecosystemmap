@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @Entity(name = "ecosystem")
 public class Ecosystem {
 
@@ -26,6 +28,7 @@ public class Ecosystem {
 	
 	@OneToMany(mappedBy = "ecosystem", cascade = CascadeType.ALL, fetch = FetchType.EAGER)  
 	@OrderBy("id")
+	@JsonIgnore
 	private List<Archetype> archetypes; 
 	
 	
